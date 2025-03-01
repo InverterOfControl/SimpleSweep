@@ -1,6 +1,10 @@
+import os
+from dotenv import load_dotenv
 from discord.ext import commands
 import discord
 import asyncio
+
+load_dotenv()
 
 intents = discord.Intents.default()
 intents.message_content = True 
@@ -17,7 +21,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    await asyncio.sleep(120) 
+    await asyncio.sleep(1200) 
     try:
         await message.delete()  
         print(f"Deleted message: {message.content}")
