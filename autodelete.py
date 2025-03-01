@@ -21,10 +21,10 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    await asyncio.sleep(1200) 
+    await asyncio.sleep(3600) 
     try:
         await message.delete()  
-        print(f"Deleted message: {message.content}")
+        print(f"{discord.utils.utcnow()} - Deleted message: {message.content} (ID: {message.id}) at {message.created_at}")
     except (discord.Forbidden, discord.HTTPException) as e:
         print(f"Fehler beim Löschen der Nachricht: {e}")
 
