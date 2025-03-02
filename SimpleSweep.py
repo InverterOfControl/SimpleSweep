@@ -16,7 +16,7 @@ async def on_ready():
     print(f'Bot logged in as {client.user}')
     delete_old_messages.start()  
 
-@tasks.loop(hours=1)
+@tasks.loop(seconds=5)
 async def delete_old_messages():
     print(f"{discord.utils.utcnow()} - Checking for messages older than 14 days...")
 
@@ -28,7 +28,7 @@ async def delete_old_messages():
         return
 
     now = discord.utils.utcnow()
-    cutoff = now - timedelta(days=14)  
+    cutoff = now - timedelta(seconds=20)  
 
     async for message in channel.history(limit=1000):
         if message.pinned:
