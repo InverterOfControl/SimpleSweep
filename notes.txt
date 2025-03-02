@@ -1,1 +1,4 @@
+Noch die Rechte setzen auf FFA
 Bei Verwendung von VPS, wie Netcup "chmod 600 .env" nicht vergessen.
+channel_id manuell setzen
+
