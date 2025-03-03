@@ -14,3 +14,4 @@
 - `discord.py` (version 2.0 or later)
 - A `.env` file with your Discord bot's token.
 
+![SimpleSweep](https://github.com/nox1104/SimpleSweep/blob/main/SimpleSweep.jpg?raw=true)
