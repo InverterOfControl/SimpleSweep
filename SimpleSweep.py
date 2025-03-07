@@ -18,9 +18,9 @@ async def on_ready():
 
 @tasks.loop(hours=1)
 async def delete_old_messages():
-    print(f"{discord.utils.utcnow()} - Checking for messages older than 14 days...")
+    print(f"{discord.utils.utcnow()} - Checking for messages and threads older than 14 days...")
 
-    channel_id = 1345154695353733131
+    channel_id = 1346147678416797807
     channel = client.get_channel(channel_id)
 
     if not channel:
@@ -28,8 +28,9 @@ async def delete_old_messages():
         return
 
     now = discord.utils.utcnow()
-    cutoff = now - timedelta(days=14)  
+    cutoff = now - timedelta(hours=333)  # Adds buffer time of 3hours to avoid conflicts with Discord's message deletion limit... it's nearly 14 days
 
+    # Delete old messages
     async for message in channel.history(limit=1000):
         if message.pinned:
             continue
@@ -39,5 +40,26 @@ async def delete_old_messages():
                 print(f"{now} - Deleted message: {message.content} (ID: {message.id}) from {message.created_at}")
             except (discord.Forbidden, discord.HTTPException) as e:
                 print(f"Error deleting the message: {e}")
+    
+    # Delete old threads
+    try:
+        # Get the guild (server) from the channel
+        guild = channel.guild
+        
+        # Get all threads in the guild
+        threads = await guild.active_threads()
+        
+        # Check and delete threads in the specified channel
+        for thread in threads:
+            # Only delete threads in our target channel
+            if thread.parent_id == channel_id and thread.created_at < cutoff:
+                try:
+                    await thread.delete()
+                    print(f"{now} - Deleted thread: {thread.name} (ID: {thread.id}) from {thread.created_at}")
+                except (discord.Forbidden, discord.HTTPException) as e:
+                    print(f"Error deleting the thread: {e}")
+    
+    except Exception as e:
+        print(f"Error handling threads: {e}")
 
 client.run(os.getenv('DISCORD_TOKEN'))
