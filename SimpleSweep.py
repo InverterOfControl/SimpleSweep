@@ -6,6 +6,10 @@ from datetime import timedelta
 
 load_dotenv()
 
+# Lade Konfiguration aus .env Datei
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+CHANNEL_ID = int(os.getenv("CHANNEL_ID", "0"))  # Default to 0 if not found
+
 intents = discord.Intents.default()
 intents.message_content = True 
 
@@ -20,11 +24,11 @@ async def on_ready():
 async def delete_old_messages():
     print(f"{discord.utils.utcnow()} - Checking for messages and threads older than 14 days...")
 
-    channel_id = 1346147678416797807
+    channel_id = CHANNEL_ID
     channel = client.get_channel(channel_id)
 
     if not channel:
-        print(f"Channel with ID {channel_id} not found! Make sure the bot has access.")
+        print(f"Channel with ID {channel_id} not found! Make sure the bot has access and CHANNEL_ID is correctly set in .env file.")
         return
 
     now = discord.utils.utcnow()
@@ -62,4 +66,4 @@ async def delete_old_messages():
     except Exception as e:
         print(f"Error handling threads: {e}")
 
-client.run(os.getenv('DISCORD_TOKEN'))
+client.run(DISCORD_TOKEN)
