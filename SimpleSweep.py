@@ -35,7 +35,7 @@ async def delete_old_messages():
     cutoff = now - timedelta(hours=333)  # Adds buffer time of 3hours to avoid conflicts with Discord's message deletion limit... it's nearly 14 days
 
     # Delete old messages
-    async for message in channel.history(limit=1000):
+    async for message in channel.history(limit=10000):
         if message.pinned:
             continue
         if message.created_at < cutoff:
